@@ -27,6 +27,19 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
 #include "brave/components/ipfs/service_sandbox_type.h"
 #endif
 
+// bat_ads::mojom::BatAdsService
+namespace bat_ads {
+namespace mojom {
+class BatAdsService;
+}  // namespace mojom
+}  // namespace bat_ads
+
+template <>
+inline sandbox::policy::SandboxType
+content::GetServiceSandboxType<bat_ads::mojom::BatAdsService>() {
+  return sandbox::policy::SandboxType::kUtility;
+}
+
 #if !defined(OS_ANDROID)  // Android will use default, which is kUtility.
 namespace bat_ledger {
 namespace mojom {
