@@ -6,8 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_COOKIE_SETTINGS_BASE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_COOKIE_SETTINGS_BASE_H_
 
-#define BRAVE_COOKIE_SETTINGS_BASE_H                                      \
-  bool ShouldUseEphemeralStorage(                                         \
+#define IsCookieSessionOnly                                               \
+  ShouldUseEphemeralStorage(                                              \
       const GURL& url, const GURL& site_for_cookies,                      \
       const absl::optional<url::Origin>& top_frame_origin) const;         \
   bool IsEphemeralCookieAccessAllowed(const GURL& url,                    \
@@ -19,10 +19,11 @@
                                      const GURL& first_party_url) const;  \
   bool IsChromiumCookieAccessAllowed(                                     \
       const GURL& url, const GURL& site_for_cookies,                      \
-      const absl::optional<url::Origin>& top_frame_origin) const;
+      const absl::optional<url::Origin>& top_frame_origin) const;         \
+  bool IsCookieSessionOnly
 
 #include "../../../../../../components/content_settings/core/common/cookie_settings_base.h"
 
-#undef BRAVE_COOKIE_SETTINGS_BASE_H
+#undef IsCookieSessionOnly
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_COOKIE_SETTINGS_BASE_H_
