@@ -107,7 +107,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
     return false;
 
   bool allow_3p =
-      IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+      IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
   bool allow_1p = IsFirstPartyAccessAllowed(first_party_url, this);
 
   // only use ephemeral storage for block 3p
@@ -127,21 +127,36 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
   if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin))
     return true;
 
-  return IsCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+  return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
 }
 
+// TODO(mario): Remove once IsCookieAccessAllowed() gets removed upstream.
 bool CookieSettingsBase::IsCookieAccessAllowed(
     const GURL& url,
     const GURL& first_party_url) const {
-  return IsCookieAccessAllowed(url, first_party_url, absl::nullopt);
+  return IsFullCookieAccessAllowed(url, first_party_url);
 }
 
+bool CookieSettingsBase::IsFullCookieAccessAllowed(
+    const GURL& url,
+    const GURL& first_party_url) const {
+  return IsFullCookieAccessAllowed(url, first_party_url, absl::nullopt);
+}
+
+// TODO(mario): Remove once IsCookieAccessAllowed() gets removed upstream.
 bool CookieSettingsBase::IsCookieAccessAllowed(
     const GURL& url,
     const GURL& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin) const {
-  bool allow =
-      IsChromiumCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+  return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin);
+}
+
+bool CookieSettingsBase::IsFullCookieAccessAllowed(
+    const GURL& url,
+    const GURL& site_for_cookies,
+    const absl::optional<url::Origin>& top_frame_origin) const {
+  bool allow = IsChromiumFullCookieAccessAllowed(url, site_for_cookies,
+                                                 top_frame_origin);
 
   if (allow)
     return true;
@@ -160,6 +175,14 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
 
 }  // namespace content_settings
 
+// TODO(mario): Remove once IsCookieAccessAllowed() gets removed upstream.
 #define IsCookieAccessAllowed IsChromiumCookieAccessAllowed
+
+#define IsFullCookieAccessAllowed IsChromiumFullCookieAccessAllowed
+
 #include "../../../../../../components/content_settings/core/common/cookie_settings_base.cc"  // NOLINT
+
+#undef IsFullCookieAccessAllowed
+
+// TODO(mario): Remove once IsCookieAccessAllowed() gets removed upstream.
 #undef IsCookieAccessAllowed
