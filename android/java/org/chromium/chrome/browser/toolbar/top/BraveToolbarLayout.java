@@ -248,7 +248,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                         && (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
                                 || block_type.equals(BraveShieldsContentSettings
                                                              .RESOURCE_IDENTIFIER_TRACKERS))) {
-                    addStatsToDb(block_type, subresource, currentTab.getUrlString());
+                    addStatsToDb(block_type, subresource, currentTab.getUrl().getSpec());
                 }
             }
 
@@ -382,11 +382,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                 if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
                         && !tab.isIncognito()) {
                     mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
-                            tab.getId(), tab.getUrlString());
+                            tab.getId(), tab.getUrl().getSpec());
                 }
-                if (PackageUtils.isFirstInstall(getContext()) && tab.getUrlString() != null
-                        && (tab.getUrlString().equals(BraveActivity.REWARDS_SETTINGS_URL)
-                                || tab.getUrlString().equals(
+                if (PackageUtils.isFirstInstall(getContext()) && tab.getUrl().getSpec() != null
+                        && (tab.getUrl().getSpec().equals(BraveActivity.REWARDS_SETTINGS_URL)
+                                || tab.getUrl().getSpec().equals(
                                         BraveActivity.BRAVE_REWARDS_SETTINGS_URL))
                         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                                 Profile.getLastUsedRegularProfile())
@@ -410,7 +410,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                 if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
                         && !tab.isIncognito()) {
                     mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
-                            tab.getId(), tab.getUrlString());
+                            tab.getId(), tab.getUrl().getSpec());
                 }
             }
         };
@@ -426,7 +426,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                         BraveShieldsUtils.PREF_SHIELDS_TOOLTIP);
             } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
                                BraveShieldsUtils.PREF_SHIELDS_VIDEO_ADS_BLOCKED_TOOLTIP)
-                    && shouldShowVideoTooltip(tab.getUrlString())) {
+                    && shouldShowVideoTooltip(tab.getUrl().getSpec())) {
                 showTooltip(ShieldsTooltipEnum.VIDEO_ADS_BLOCKED_TOOLTIP,
                         BraveShieldsUtils.PREF_SHIELDS_VIDEO_ADS_BLOCKED_TOOLTIP);
             } else if (!BraveShieldsUtils.hasShieldsTooltipShown(
@@ -893,7 +893,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             return;
         }
         try {
-            URL url = new URL(currentTab.getUrlString());
+            URL url = new URL(currentTab.getUrl().getSpec());
             // Don't show shields popup if protocol is not valid for shields.
             if (!isValidProtocolForShields(url.getProtocol())) {
                 return;
@@ -932,7 +932,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
                 && BraveActivity.getBraveActivity() != null
                 && BraveActivity.getBraveActivity().getActivityTab() != null
                 && UrlUtilities.isNTPUrl(
-                        BraveActivity.getBraveActivity().getActivityTab().getUrlString())
+                        BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
                 && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
                 && !BraveSearchEngineUtils.getDSEShortName(true).equals(
                         OnboardingPrefManager.DUCKDUCKGO)) {
@@ -1052,7 +1052,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
             return false;
         }
         return BraveShieldsContentSettings.getShields(
-                Profile.fromWebContents(((TabImpl) tab).getWebContents()), tab.getUrlString(),
+                Profile.fromWebContents(((TabImpl) tab).getWebContents()), tab.getUrl().getSpec(),
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
     }
 
