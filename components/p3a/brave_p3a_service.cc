@@ -166,6 +166,96 @@ constexpr const char* kCollectedHistograms[] = {
 };
 // clang-format on
 
+// Please keep this list sorted and synced with |DoHistogramBravezation|.
+constexpr const char* kBravezationHistograms[] = {
+    "Bookmarks.Count.OnProfileLoad", "DefaultBrowser.State",
+    "Extensions.LoadExtension",      "Tabs.TabCount",
+    "Tabs.TabCountPerLoad",          "Tabs.WindowCount",
+};
+
+// TODO(iefremov): Replace a bunch of 'if's with something more elegant.
+// Records the given sample using the proper Brave way.
+void DoHistogramBravezation(const char* histogram_name,
+                            uint64_t name_hash,
+                            base::HistogramBase::Sample sample) {
+  DCHECK(histogram_name);
+  if (strcmp("Bookmarks.Count.OnProfileLoad", histogram_name) == 0) {
+    constexpr int kIntervals[] = {5, 20, 100, 500, 1000, 5000, 10000};
+    const int* it = std::lower_bound(kIntervals, std::end(kIntervals), sample);
+    const int answer = it - kIntervals;
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.BookmarksCountOnProfileLoad.2",
+                               answer, base::size(kIntervals));
+    return;
+  }
+
+  if (strcmp("DefaultBrowser.State", histogram_name) == 0) {
+    int answer = 0;
+    switch (sample) {
+      case 0:  // Not default.
+      case 1:  // Default.
+        answer = sample;
+        break;
+      case 2:  // Unknown, merging to "Not default".
+        answer = 0;
+        break;
+      case 3:  // Other mode is default, merging to "Default".
+        answer = 1;
+        break;
+      default:
+        NOTREACHED();
+    }
+    UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefault", answer);
+  }
+
+  if (strcmp("Extensions.LoadExtension", histogram_name) == 0) {
+    int answer = 0;
+    if (sample == 1)
+      answer = 1;
+    else if (2 <= sample && sample <= 4)
+      answer = 2;
+    else if (sample >= 5)
+      answer = 3;
+
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.NumberOfExtensions", answer, 3);
+    return;
+  }
+
+  if (strcmp("Tabs.TabCount", histogram_name) == 0 ||
+      strcmp("Tabs.TabCountPerLoad", histogram_name) == 0) {
+    int answer = 0;
+    if (0 <= sample && sample <= 1) {
+      answer = 0;
+    } else if (2 <= sample && sample <= 5) {
+      answer = 1;
+    } else if (6 <= sample && sample <= 10) {
+      answer = 2;
+    } else if (11 <= sample && sample <= 50) {
+      answer = 3;
+    } else {
+      answer = 4;
+    }
+
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.TabCount", answer, 4);
+    return;
+  }
+
+  if (strcmp("Tabs.WindowCount", histogram_name) == 0) {
+    int answer = 0;
+    if (sample <= 0) {
+      answer = 0;
+    } else if (sample == 1) {
+      answer = 1;
+    } else if (2 <= sample && sample <= 5) {
+      answer = 2;
+    } else {
+      answer = 3;
+    }
+
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount.2", answer, 3);
+    return;
+  }
+}
+
 bool IsSuspendedMetric(base::StringPiece metric_name,
                        uint64_t value_or_bucket) {
   return value_or_bucket == kSuspendedMetricBucket;
@@ -217,9 +307,16 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
 
 void BraveP3AService::InitCallbacks() {
   for (const char* histogram_name : kCollectedHistograms) {
-    base::StatisticsRecorder::SetCallback(
+    AddHistogramSampleCallback(
         histogram_name,
         base::BindRepeating(&BraveP3AService::OnHistogramChanged, this));
+  }
+
+  // Set callbacks for existing Chromium histograms that will be braveized,
+  // i.e. reemitted using a different name and custom buckets.
+  for (const char* histogram_name : kBravezationHistograms) {
+    AddHistogramSampleCallback(histogram_name,
+                               base::BindRepeating(&DoHistogramBravezation));
   }
 }
 
@@ -404,12 +501,26 @@ void BraveP3AService::StartScheduledUpload() {
   }
 }
 
+void BraveP3AService::AddHistogramSampleCallback(
+    std::string histogram_name,
+    const base::StatisticsRecorder::OnSampleCallback&
+        histogram_sample_callback) {
+  braveized_histograms_.insert(
+      {histogram_name,
+       std::make_unique<
+           base::StatisticsRecorder::ScopedHistogramSampleObserver>(
+           histogram_name, histogram_sample_callback)});
+}
+
 void BraveP3AService::OnHistogramChanged(const char* histogram_name,
                                          uint64_t name_hash,
                                          base::HistogramBase::Sample sample) {
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
-  DCHECK(!samples->Iterator()->Done());
+
+  // Stop now if there's nothing to do.
+  if (samples->Iterator()->Done())
+    return;
 
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
