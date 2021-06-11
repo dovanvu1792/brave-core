@@ -1,5 +1,5 @@
 diff --git a/services/network/restricted_cookie_manager.cc b/services/network/restricted_cookie_manager.cc
-index b1ab2b4fc8e0a069b41ca2555889120025a9172a..289de4804b1f3b006f09845829f8049695d17761 100644
+index a921e988616f67f12a79faeec6e467a6cb7cb40a..3c804575c725266045e39d790778246c5a52d79d 100644
 --- a/services/network/restricted_cookie_manager.cc
 +++ b/services/network/restricted_cookie_manager.cc
 @@ -301,6 +301,7 @@ void RestrictedCookieManager::GetAllForUrl(
