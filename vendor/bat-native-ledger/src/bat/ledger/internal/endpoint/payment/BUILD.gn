@@ -1,0 +1,61 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/vendor/bat-native-ledger/config.gni")
+
+config("internal_config") {
+  defines = [
+    "BITFLYER_CLIENT_ID=\"$bitflyer_client_id\"",
+    "BITFLYER_CLIENT_SECRET=\"$bitflyer_client_secret\"",
+    "BITFLYER_STAGING_CLIENT_ID=\"$bitflyer_staging_client_id\"",
+    "BITFLYER_STAGING_CLIENT_SECRET=\"$bitflyer_staging_client_secret\"",
+    "BITFLYER_STAGING_URL=\"$bitflyer_staging_url\"",
+    "GEMINI_API_URL=\"$gemini_api_url\"",
+    "GEMINI_API_STAGING_URL=\"$gemini_api_staging_url\"",
+    "GEMINI_OAUTH_URL=\"$gemini_oauth_url\"",
+    "GEMINI_OAUTH_STAGING_URL=\"$gemini_oauth_staging_url\"",
+    "GEMINI_WALLET_CLIENT_ID=\"$gemini_wallet_client_id\"",
+    "GEMINI_WALLET_CLIENT_SECRET=\"$gemini_wallet_client_secret\"",
+    "GEMINI_WALLET_STAGING_CLIENT_ID=\"$gemini_wallet_staging_client_id\"",
+    "GEMINI_WALLET_STAGING_CLIENT_SECRET=\"$gemini_wallet_staging_client_secret\"",
+    "UPHOLD_CLIENT_ID=\"$uphold_client_id\"",
+    "UPHOLD_CLIENT_SECRET=\"$uphold_client_secret\"",
+    "UPHOLD_STAGING_CLIENT_ID=\"$uphold_staging_client_id\"",
+    "UPHOLD_STAGING_CLIENT_SECRET=\"$uphold_staging_client_secret\"",
+  ]
+  include_dirs = [
+    "//brave/vendor/bat-native-ledger/include",
+    "//brave/vendor/bat-native-ledger/src",
+    "$target_gen_dir",
+  ]
+}
+
+source_set("payment") {
+  configs += [ ":internal_config" ]
+
+  sources = [
+    "payment_server.cc",
+    "payment_server.h",
+    "payment_util.cc",
+    "payment_util.h",
+    "post_credentials/post_credentials.cc",
+    "post_credentials/post_credentials.h",
+    "post_order/post_order.cc",
+    "post_order/post_order.h",
+    "post_transaction_anon/post_transaction_anon.cc",
+    "post_transaction_anon/post_transaction_anon.h",
+    "post_transaction_gemini/post_transaction_gemini.cc",
+    "post_transaction_gemini/post_transaction_gemini.h",
+    "post_transaction_uphold/post_transaction_uphold.cc",
+    "post_transaction_uphold/post_transaction_uphold.h",
+    "post_votes/post_votes.cc",
+    "post_votes/post_votes.h"
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/challenge_bypass_ristretto"
+  ]
+}

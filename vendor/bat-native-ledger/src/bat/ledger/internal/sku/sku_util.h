@@ -20,6 +20,8 @@ std::string GetAnonCardDestination();
 
 std::string GetUpholdDestination();
 
+std::string GetGeminiDestination();
+
 }  // namespace sku
 }  // namespace ledger
 

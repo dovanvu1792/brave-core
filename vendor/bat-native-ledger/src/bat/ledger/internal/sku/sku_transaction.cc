@@ -25,6 +25,10 @@ ledger::type::SKUTransactionType GetTransactionTypeFromWalletType(
     return ledger::type::SKUTransactionType::UPHOLD;
   }
 
+  if (wallet_type == ledger::constant::kWalletGemini) {
+    return ledger::type::SKUTransactionType::GEMINI;
+  }
+
   if (wallet_type == ledger::constant::kWalletAnonymous) {
     return ledger::type::SKUTransactionType::ANONYMOUS_CARD;
   }
@@ -192,6 +196,12 @@ void SKUTransaction::SendExternalTransaction(
     }
     case type::SKUTransactionType::UPHOLD: {
       payment_server_->post_transaction_uphold()->Request(
+          transaction,
+          url_callback);
+      return;
+    }
+    case type::SKUTransactionType::GEMINI: {
+      payment_server_->post_transaction_gemini()->Request(
           transaction,
           url_callback);
       return;

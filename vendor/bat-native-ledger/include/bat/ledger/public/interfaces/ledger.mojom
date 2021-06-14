@@ -498,7 +498,8 @@ enum SKUTransactionType {
   NONE = 0,
   UPHOLD = 1,
   ANONYMOUS_CARD = 2,
-  TOKENS = 3
+  TOKENS = 3,
+  GEMINI = 4
 };
 
 enum SKUTransactionStatus {

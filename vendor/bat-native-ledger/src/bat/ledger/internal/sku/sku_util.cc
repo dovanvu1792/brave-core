@@ -26,9 +26,22 @@ const char kUpholdDestinationStaging[] =
 const char kUpholdDestinationProduction[] =
     "5d4be2ad-1c65-4802-bea1-e0f3a3a487cb";
 
+
+// To-Do(@jumde) - Need the destination addresses for gemini
+const char kGeminiDestinationDev[] =
+    "60c0f891-5f98-4bee-a35d-9f834eaebfc0";
+const char kGeminiDestinationStaging[] =
+    "60c0f891-5f98-4bee-a35d-9f834eaebfc0";
+const char kGeminiDestinationProduction[] =
+    "60c0f891-5f98-4bee-a35d-9f834eaebfc0";
+
 std::string GetBraveDestination(const std::string& wallet_type) {
   if (wallet_type == constant::kWalletUphold) {
     return GetUpholdDestination();
+  }
+
+  if (wallet_type == constant::kWalletGemini) {
+    return GetGeminiDestination();
   }
 
   if (wallet_type == constant::kWalletAnonymous) {
@@ -67,6 +80,23 @@ std::string GetUpholdDestination() {
 
   if (ledger::_environment == type::Environment::DEVELOPMENT) {
     return kUpholdDestinationDev;
+  }
+
+  NOTREACHED();
+  return kUpholdDestinationDev;
+}
+
+std::string GetGeminiDestination() {
+  if (ledger::_environment == type::Environment::PRODUCTION) {
+    return kGeminiDestinationProduction;
+  }
+
+  if (ledger::_environment == type::Environment::STAGING) {
+    return kGeminiDestinationStaging;
+  }
+
+  if (ledger::_environment == type::Environment::DEVELOPMENT) {
+    return kGeminiDestinationDev;
   }
 
   NOTREACHED();

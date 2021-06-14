@@ -3473,11 +3473,11 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
   return ledger::constant::kWalletUphold;
 #endif
 
-  return wallet_type_;
+  return profile_->GetPrefs()->GetString(prefs::kWalletType);
 }
 
 void RewardsServiceImpl::SetSelectedWallet(const std::string wallet_type) {
-  wallet_type_ = wallet_type;
+  profile_->GetPrefs()->SetString(prefs::kWalletType, wallet_type);
 }
 
 }  // namespace brave_rewards

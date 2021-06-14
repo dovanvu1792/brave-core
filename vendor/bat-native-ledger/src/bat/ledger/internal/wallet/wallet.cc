@@ -143,6 +143,7 @@ void Wallet::DisconnectWallet(
             return;
           }
           ledger_->uphold()->DisconnectWallet(true);
+          ledger_->state()->ResetWalletType();
           callback(type::Result::LEDGER_OK);
         });
     return;
@@ -157,6 +158,7 @@ void Wallet::DisconnectWallet(
             return;
           }
           ledger_->bitflyer()->DisconnectWallet(true);
+          ledger_->state()->ResetWalletType();
           callback(type::Result::LEDGER_OK);
         });
     return;
@@ -171,6 +173,7 @@ void Wallet::DisconnectWallet(
             return;
           }
           ledger_->bitflyer()->DisconnectWallet(true);
+          ledger_->state()->ResetWalletType();
           callback(type::Result::LEDGER_OK);
         });
     return;

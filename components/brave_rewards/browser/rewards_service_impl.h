@@ -796,7 +796,6 @@ class RewardsServiceImpl : public RewardsService,
   bool ledger_for_testing_ = false;
   bool resetting_rewards_ = false;
   int persist_log_level_ = 0;
-  std::string wallet_type_ = "";
 
   GetTestResponseCallback test_response_callback_;
 
