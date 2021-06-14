@@ -53,6 +53,7 @@ import {
 } from 'brave-ui/components/icons'
 
 import { BitflyerIcon } from '../../../shared/components/icons/bitflyer_icon'
+import { GeminiIcon } from '../../../shared/components/icons/gemini_icon'
 
 import giftIconUrl from './assets/gift.svg'
 import loveIconUrl from './assets/love.svg'
@@ -162,7 +163,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
   generateActions (actions: ActionWallet[], id?: string) {
     return actions && actions.map((action, i: number) => {
-      let clickAction = action.externalWallet ? this.onActionClick.bind(this, action.action) : action.action
+      let clickAction = action.externalWallet ? this.onActionClick.bind(this, this.props.onVerifyClick) : action.action
       return (
         <StyledAction key={`${id}-${i}`} onClick={clickAction} data-test-id={action.testId}>
           <StyledActionIcon>{action.icon}</StyledActionIcon>
@@ -323,6 +324,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const walletProviderIcon =
       walletType === 'uphold' ? <UpholdSystemIcon /> :
       walletType === 'bitflyer' ? <BitflyerIcon white={true} /> :
+      walletType === 'gemini' ? <GeminiIcon /> :
       null
 
     const buttonProps: Partial<ButtonProps> = {
@@ -600,6 +602,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     const walletIcon =
       walletType === 'uphold' ? <UpholdColorIcon /> :
+      walletType === 'gemini' ? <GeminiIcon /> :
       null
 
     return (

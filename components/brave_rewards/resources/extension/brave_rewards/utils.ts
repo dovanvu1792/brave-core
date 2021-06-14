@@ -95,7 +95,7 @@ export const isPublisherNotVerified = (status?: RewardsExtension.PublisherStatus
 
 export const getWalletStatus = (externalWallet?: RewardsExtension.ExternalWallet): WalletState | undefined => {
   if (!externalWallet) {
-    return undefined
+    return 'unverified'
   }
 
   switch (externalWallet.status) {
@@ -127,7 +127,7 @@ export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) =
   return getMessage('greetingsVerified', [externalWallet.userName])
 }
 
-export const handleExternalWalletLink = (balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
+export const handleExternalWalletLink = (actions: any, balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
   if (!externalWallet) {
     return
   }

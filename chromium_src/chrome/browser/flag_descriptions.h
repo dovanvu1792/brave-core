@@ -37,6 +37,8 @@ extern const char kBraveSyncName[];
 extern const char kBraveSyncDescription[];
 extern const char kBraveIpfsName[];
 extern const char kBraveIpfsDescription[];
+extern const char kBraveRewardsGeminiName[];
+extern const char kBraveRewardsGeminiDescription[];
 extern const char kBraveRewardsVerboseLoggingName[];
 extern const char kBraveRewardsVerboseLoggingDescription[];
 extern const char kNativeBraveWalletName[];

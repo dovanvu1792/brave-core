@@ -272,7 +272,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "editCardsTitle", IDS_EDIT_CARDS_TITLE },
         { "tosAndPp", IDS_REWARDS_WIDGET_TOS_AND_PP},     // NOLINT
         { "rewardsWidgetStartUsing", IDS_REWARDS_WIDGET_START_USING},     // NOLINT
-        { "pendingRewardsMessage", IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE },
         // Together Widget
         { "togetherWidgetTitle", IDS_TOGETHER_WIDGET_TITLE },
         { "togetherWidgetWelcomeTitle", IDS_TOGETHER_WIDGET_WELCOME_TITLE },
@@ -721,7 +720,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "optOutTooltip", IDS_BRAVE_UI_ADS_OPT_OUT_TOOLTIP },
         { "payment", IDS_BRAVE_UI_PAYMENT },
         { "paymentNotMade", IDS_BRAVE_UI_PAYMENT_NOT_MADE },
-        { "pendingRewardsMessage", IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE },
         { "pendingContributions", IDS_BRAVE_UI_PENDING_CONTRIBUTIONS },
         { "pendingContributionEmpty", IDS_BRAVE_UI_PENDING_CONTRIBUTION_EMPTY },
         { "pendingContributionRemoveAll", IDS_BRAVE_UI_PENDING_CONTRIBUTION_REMOVE_ALL },        // NOLINT
@@ -831,6 +829,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletActivity", IDS_BRAVE_UI_WALLET_ACTIVITY },
         { "walletAddress", IDS_BRAVE_UI_WALLET_ADDRESS },
         { "walletBalance", IDS_BRAVE_UI_WALLET_BALANCE },
+        { "walletConnectButtonText", IDS_BRAVE_UI_WALLET_CONNECT_BUTTON_TEXT },
+        { "walletConnectMessage", IDS_BRAVE_UI_WALLET_CONNECT_MESSAGE },
+        { "walletConnectNote", IDS_BRAVE_UI_WALLET_CONNECT_NOTE },
+        { "walletConnectReconnectLink", IDS_BRAVE_UI_WALLET_CONNECT_RECONNECT_LINK },  // NOLINT
+        { "walletConnectReconnectText", IDS_BRAVE_UI_WALLET_CONNECT_RECONNECT_TEXT },  // NOLINT
+        { "walletConnectTitle", IDS_BRAVE_UI_WALLET_CONNECT_TITLE },
         { "walletButtonDisconnected", IDS_BRAVE_UI_WALLET_BUTTON_DISCONNECTED },
         { "walletButtonUnverified", IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED },
         { "walletButtonVerified", IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED },

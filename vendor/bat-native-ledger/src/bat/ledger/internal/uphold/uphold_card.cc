@@ -58,8 +58,8 @@ void UpholdCard::OnCreateIfNecessary(
     const std::string& id,
     CreateCardCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
-    callback(type::Result::EXPIRED_TOKEN, "");
     ledger_->uphold()->DisconnectWallet();
+    callback(type::Result::EXPIRED_TOKEN, "");
     return;
   }
 

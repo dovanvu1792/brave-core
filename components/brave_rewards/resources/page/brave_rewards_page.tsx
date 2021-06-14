@@ -95,6 +95,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onExcludedList(list)
   }
 
+  function externalWalletProviderList (list: Rewards.ExternalWalletProvider[]) {
+    getActions().onExternalWalletProviderList(list)
+  }
+
   function balanceReport (properties: {month: number, year: number, report: Rewards.BalanceReport}) {
     getActions().onBalanceReport(properties)
   }
@@ -206,8 +210,8 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
-  function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
-    getActions().onExternalWallet(properties.result, properties.wallet)
+  function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet, openVerifyUrl: boolean}) {
+    getActions().onExternalWallet(properties.result, properties.wallet, properties.openVerifyUrl)
   }
 
   function processRewardsPageUrl (data: Rewards.ProcessRewardsPageUrl) {
@@ -294,6 +298,7 @@ window.cr.define('brave_rewards', function () {
     recurringTipRemoved,
     onRemovePendingContribution,
     excludedSiteChanged,
+    externalWalletProviderList,
     balance,
     reconcileComplete,
     externalWallet,

@@ -487,7 +487,17 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR_WALLET" desc="">Error creating Brave Browser BAT card</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TITLE" desc="">You need a verified wallet to Login</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_BAT_LIMIT_TEXT" desc="">You need a minimum of <ph name="AMOUNT">$1<ex>15</ex></ph> BAT to create an Uphold wallet. Please try again after you have verified your wallet with Uphold.</message>
-      <message name="IDS_BRAVE_REWARDS_PENDING_REWARDS_MESSAGE" desc=""><ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> arriving in <ph name="DAYS">$2<ex>4 days</ex></ph></message>
+      <message name="IDS_BRAVE_REWARDS_ALREADY_CONNECTED" desc="">Already connected your wallet previously?</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER" desc="">Choose a wallet service</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT" desc="">Choose a preferred wallet service. If you already have an account, you will be asked to log in to connect.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_HEADER" desc="">Before you continue...</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_NOTE" desc="">Brave Software Inc. does not process, store, or access any of the personal information when you establish an account with our custodial wallet partners.</message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_INFO_TEXT" desc="">Receive rewards directly in your wallet hosted by a custodial wallet service, so you can store and manage your funds easily. <ph name="EMPHASIS_BEGIN">$1</ph>Your photo ID is required for Rewards to be funded from Brave.<ph name="EMPHASIS_END">$2</ph></message>
+      <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_TERMS_LABEL" desc="">I have read and agree to Brave’s <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">$2</ph> &amp; <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.</message>
+      <message name="IDS_BRAVE_REWARDS_CONTINUE" desc="">Continue</message>
+      <message name="IDS_BRAVE_REWARDS_CONTINUE_TO_LOGIN" desc="">Continue to login</message>
+      <message name="IDS_BRAVE_REWARDS_MINIMUM_BALANCE_WARNING" desc=""><ph name="PROVIDER">$1</ph> requires a minimum balance of <ph name="AMOUNT">$2</ph> BAT to create an account. If you connected an account previously,</message>
+      <message name="IDS_BRAVE_REWARDS_RECONNECT_WALLET" desc="">Log in to reconnect</message>
 
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_HEADER" desc="">Choose a wallet service</message>
       <message name="IDS_BRAVE_REWARDS_CONNECT_WALLET_CHOOSE_TEXT" desc="">Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.</message>
@@ -919,7 +929,7 @@
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
       <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_NOTE" desc="">NOTE:</message>
-      <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT" desc="">This creator has not yet signed up to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
+      <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT" desc="">This creator is currently not configured to receive tips from your wallet. Any tip you make will remain pending in your wallet and retry automatically for 90 days.</message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_CONNECTED_TEXT" desc="Text shown for connected publishers that are not fully verified on site banner">This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
       <message name="IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE" desc="">Learn more.</message>
       <message name="IDS_BRAVE_UI_ADS_EARNINGS" desc="Description text for ad grants in grant details">earned from ads</message>
@@ -947,6 +957,12 @@
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_UGP" desc="Token text on final grant screen for UGP">Free Token Grant</message>
 
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_VERIFY" desc="">verify</message>
+      <message name="IDS_BRAVE_UI_WALLET_CONNECT_BUTTON_TEXT" desc="">Continue</message>
+      <message name="IDS_BRAVE_UI_WALLET_CONNECT_MESSAGE" desc="">Receive rewards directly in your wallet hosted by a custodial wallet service, so you can store and manager your funds easily.</message>
+      <message name="IDS_BRAVE_UI_WALLET_CONNECT_RECONNECT_LINK" desc="">Login to reconnect</message>
+      <message name="IDS_BRAVE_UI_WALLET_CONNECT_RECONNECT_TEXT" desc="">Already connected your wallet previously?</message>
+      <message name="IDS_BRAVE_UI_WALLET_CONNECT_NOTE" desc="">*You must verify your identity with your wallet service in order to have the rewards directly deposited from Brave.</message>
+      <message name="IDS_BRAVE_UI_WALLET_CONNECT_TITLE" desc="">Connect Wallet</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_DISCONNECTED" desc="">Disconnected</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED" desc="">Verify Wallet</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED" desc="">Wallet Verified</message>

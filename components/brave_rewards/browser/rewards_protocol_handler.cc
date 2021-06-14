@@ -60,9 +60,12 @@ void LoadRewardsURL(
 
   // Only accept rewards scheme from allowed domains
   const std::string bitflyer_staging_host = GURL(BITFLYER_STAGING_URL).host();
+  const std::string gemini_staging_host = GURL(GEMINI_OAUTH_STAGING_URL).host();
   const char* kAllowedDomains[] = {
       "bitflyer.com",                 // bitFlyer production
       bitflyer_staging_host.c_str(),  // bitFlyer staging
+      "gemini.com",                   // Gemini production
+      gemini_staging_host.c_str(),    // Gemini staging
       "uphold.com",                   // Uphold staging/production
   };
   bool allowed_domain = false;

@@ -183,8 +183,11 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      flag_descriptions::kBraveRewardsVerboseLoggingName,                    \
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
      kOsDesktop | kOsAndroid,                                               \
-     FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},
-
+     FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature)},  \
+    {"brave-rewards-gemini",                                                \
+     flag_descriptions::kBraveRewardsGeminiName,                            \
+     flag_descriptions::kBraveRewardsGeminiDescription, kOsDesktop,         \
+     FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT

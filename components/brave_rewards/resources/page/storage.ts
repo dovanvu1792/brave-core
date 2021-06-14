@@ -60,6 +60,7 @@ export const defaultState: Rewards.State = {
   },
   pendingContributions: [],
   excludedList: [],
+  externalWalletProviderList: [],
   balance: {
     total: 0,
     wallets: {}
@@ -88,20 +89,6 @@ const cleanData = (state: Rewards.State) => {
 
   if (!state.parameters) {
     state.parameters = defaultState.parameters
-  }
-
-  // Name change: onBoardingDisplayed -> verifyOnboardingDisplayed
-  if (state.ui.verifyOnboardingDisplayed === undefined) {
-    const { ui } = state as any
-    if (ui.onBoardingDisplayed) {
-      ui.verifyOnboardingDisplayed = true
-      ui.onBoardingDisplayed = undefined
-    }
-  }
-
-  // Data type change: adsNextPaymentDate (string -> number)
-  if (typeof (state.adsData.adsNextPaymentDate as any) !== 'number') {
-    throw new Error('Invalid adsNextPaymentDate')
   }
 
   state.ui.modalRedirect = 'hide'

@@ -14,6 +14,7 @@
 #include "base/callback_forward.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
+#include "base/values.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "build/build_config.h"
@@ -310,6 +311,8 @@ class RewardsService : public KeyedService {
 
   virtual void GetExternalWallet(GetExternalWalletCallback callback) = 0;
 
+  virtual base::Value GetExternalWalletProviders() = 0;
+
   virtual void ProcessRewardsPageUrl(
       const std::string& path,
       const std::string& query,
@@ -364,6 +367,8 @@ class RewardsService : public KeyedService {
   virtual void SetAdsEnabled(const bool is_enabled) = 0;
 
   virtual bool IsRewardsEnabled() const = 0;
+
+  virtual void SetSelectedWallet(const std::string wallet_type) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

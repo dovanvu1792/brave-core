@@ -94,6 +94,10 @@ export const onBalanceReport = (properties: {month: number, year: number, report
   report: properties.report
 })
 
+export const onExternalWalletProviderList = (list: Rewards.ExternalWalletProvider[]) => action(types.ON_EXTERNAL_WALLET_PROVIDER_LIST, {
+  list
+})
+
 export const getBalanceReport = (month: number, year: number) => action(types.GET_BALANCE_REPORT, {
   month,
   year
@@ -252,9 +256,10 @@ export const onBalance = (status: number, balance: Rewards.Balance) => action(ty
 
 export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
 
-export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet, openVerifyUrl: boolean) => action(types.ON_EXTERNAL_WALLET, {
   result,
-  wallet
+  wallet,
+  openVerifyUrl
 })
 
 export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {

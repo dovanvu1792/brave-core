@@ -13,6 +13,7 @@ struct Feature;
 namespace brave_rewards {
 namespace features {
 
+extern const base::Feature kGeminiFeature;
 extern const base::Feature kVerboseLoggingFeature;
 
 }  // namespace features
