@@ -372,6 +372,12 @@ Config.prototype.buildArgs = function () {
     // Fixes WebRTC IP leak with default option
     args.enable_mdns = true
 
+    // Use classic desugaring instead of D8/R8. Problem with D8/R8 are warnings (that are treated as
+    // errors in Release) on mising deps for code patched in bytecode. This happens due to adding
+    // deps to general targets (brave_chrome_java_deps, brave_chrome_all_java_deps) rather then to
+    // each target separately. We do this to avoid extensive direct patching.
+    args.enable_bazel_desugar = true
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_nacl
