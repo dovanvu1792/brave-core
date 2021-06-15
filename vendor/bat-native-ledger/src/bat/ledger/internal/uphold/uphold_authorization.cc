@@ -33,7 +33,6 @@ void UpholdAuthorization::Authorize(
     const base::flat_map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
   auto wallet = GetWallet(ledger_);
-
   if (!wallet) {
     BLOG(0, "Wallet is null");
     callback(type::Result::LEDGER_ERROR, {});
@@ -114,22 +113,18 @@ void UpholdAuthorization::OnAuthorize(
     const type::Result result,
     const std::string& token,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  auto uphold_wallet = GetWallet(ledger_);
-  DCHECK(uphold_wallet);
-
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, {});
-    ledger_->uphold()->DisconnectWallet();
-
-    // Theoretically, calling DisconnectWallet() could result in DISCONNECTED_VERIFIED,
-    // but only in case the status was VERIFIED (which we know it wasn't - see above).
-    DCHECK(uphold_wallet->status == type::WalletStatus::NOT_CONNECTED);
-    return;
+    // status == type::WalletStatus::NOT_CONNECTED
+    // Theoretically, calling DisconnectWallet() could result in
+    // DISCONNECTED_VERIFIED, but only in case the status was VERIFIED (which we
+    // know it wasn't - see above).
+    return ledger_->uphold()->DisconnectWallet();
   }
 
-  DCHECK(uphold_wallet->status == type::WalletStatus::NOT_CONNECTED ||
-         uphold_wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
+  // status == type::WalletStatus::NOT_CONNECTED ||
+  // status == type::WalletStatus::DISCONNECTED_VERIFIED
 
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get token");
@@ -141,6 +136,8 @@ void UpholdAuthorization::OnAuthorize(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
+  auto uphold_wallet = GetWallet(ledger_);
+  DCHECK(uphold_wallet);
   uphold_wallet->token = token;
   uphold_wallet->status = type::WalletStatus::PENDING;
   ledger_->uphold()->SetWallet(uphold_wallet->Clone());
