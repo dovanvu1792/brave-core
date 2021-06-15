@@ -467,7 +467,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout
         // tooltip on new tabs
         if ((mBraveShieldsButton == null && !mBraveShieldsButton.isShown())
                 || UrlUtilities.isNTPUrl(
-                        BraveActivity.getBraveActivity().getActivityTab().getUrlString())) {
+                        BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())) {
             return;
         }
 
