@@ -35,16 +35,6 @@ class UpholdAuthorization {
       const std::string& token,
       ledger::ExternalWalletAuthorizationCallback callback);
 
-  void OnGetUser(
-      const type::Result result,
-      const User& user,
-      ledger::ExternalWalletAuthorizationCallback callback);
-
-  void OnCardCreate(
-      const type::Result result,
-      const std::string& address,
-      ledger::ExternalWalletAuthorizationCallback callback);
-
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::UpholdServer> uphold_server_;
 };

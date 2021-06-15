@@ -39,6 +39,12 @@ void UpholdAuthorization::Authorize(
     callback(type::Result::LEDGER_ERROR, {});
     return;
   }
+
+  // We're using only 4 states (NOT_CONNECTED, VERIFIED, DISCONNECTED_VERIFIED, PENDING)
+  // and we don't want to authorize with Uphold in VERIFIED and PENDING.
+  DCHECK(wallet->status == type::WalletStatus::NOT_CONNECTED ||
+         wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
+
   const auto current_one_time = wallet->one_time_string;
 
   // we need to generate new string as soon as authorization is triggered
@@ -99,142 +105,52 @@ void UpholdAuthorization::Authorize(
     return;
   }
 
-  auto url_callback = std::bind(&UpholdAuthorization::OnAuthorize,
-      this,
-      _1,
-      _2,
-      callback);
-
-  uphold_server_->post_oauth()->Request(code, url_callback);
+  uphold_server_->post_oauth()->Request(
+      code,
+      std::bind(&UpholdAuthorization::OnAuthorize, this, _1, _2, callback));
 }
 
 void UpholdAuthorization::OnAuthorize(
     const type::Result result,
     const std::string& token,
     ledger::ExternalWalletAuthorizationCallback callback) {
+  auto uphold_wallet = GetWallet(ledger_);
+  DCHECK(uphold_wallet);
+
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(type::Result::EXPIRED_TOKEN, {});
     ledger_->uphold()->DisconnectWallet();
+
+    // Theoretically, calling DisconnectWallet() could result in DISCONNECTED_VERIFIED,
+    // but only in case the status was VERIFIED (which we know it wasn't - see above).
+    DCHECK(uphold_wallet->status == type::WalletStatus::NOT_CONNECTED);
     return;
   }
 
+  DCHECK(uphold_wallet->status == type::WalletStatus::NOT_CONNECTED ||
+         uphold_wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
+
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get token");
-    callback(type::Result::LEDGER_ERROR, {});
-    return;
+    return callback(type::Result::LEDGER_ERROR, {});
   }
 
   if (token.empty()) {
     BLOG(0, "Token is empty");
-    callback(type::Result::LEDGER_ERROR, {});
-    return;
+    return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  auto wallet_ptr = GetWallet(ledger_);
-
-  wallet_ptr->token = token;
-
-  switch (wallet_ptr->status) {
-    case type::WalletStatus::NOT_CONNECTED: {
-      wallet_ptr->status = type::WalletStatus::CONNECTED;
-      break;
-    }
-    case type::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
-      wallet_ptr->status = type::WalletStatus::CONNECTED;
-      break;
-    }
-    case type::WalletStatus::DISCONNECTED_VERIFIED: {
-      wallet_ptr->status = type::WalletStatus::VERIFIED;
-      break;
-    }
-    default:
-      break;
-  }
+  uphold_wallet->token = token;
+  uphold_wallet->status = type::WalletStatus::PENDING;
+  ledger_->uphold()->SetWallet(uphold_wallet->Clone());
 
   // After a login, we want to attempt to relink the user's payment ID to their
   // Uphold wallet address. Clear the flag that will cause relinking to be
   // skipped.
   ledger_->state()->SetAnonTransferChecked(false);
 
-  ledger_->uphold()->SetWallet(wallet_ptr->Clone());
-
-  auto user_callback = std::bind(&UpholdAuthorization::OnGetUser,
-      this,
-      _1,
-      _2,
-      callback);
-  ledger_->uphold()->GetUser(user_callback);
-}
-
-void UpholdAuthorization::OnGetUser(
-    const type::Result result,
-    const User& user,
-    ledger::ExternalWalletAuthorizationCallback callback) {
-  auto wallet_ptr = GetWallet(ledger_);
-  base::flat_map<std::string, std::string> args;
-
-  if (user.bat_not_allowed || !wallet_ptr) {
-    BLOG(0, "BAT not allowed");
-    callback(type::Result::BAT_NOT_ALLOWED, args);
-    return;
-  }
-
-  if (user.status == UserStatus::OK) {
-    wallet_ptr->status = user.verified
-        ? type::WalletStatus::VERIFIED
-        : type::WalletStatus::CONNECTED;
-    ledger_->uphold()->SetWallet(wallet_ptr->Clone());
-
-    if (wallet_ptr->address.empty()) {
-      auto new_callback = std::bind(&UpholdAuthorization::OnCardCreate,
-          this,
-          _1,
-          _2,
-          callback);
-      ledger_->uphold()->CreateCard(new_callback);
-      return;
-    }
-
-    if (!user.verified) {
-      args["redirect_url"] = GetSecondStepVerify();
-    }
-  } else {
-    wallet_ptr->status = type::WalletStatus::PENDING;
-    ledger_->uphold()->SetWallet(wallet_ptr->Clone());
-    args["redirect_url"] = GetSecondStepVerify();
-  }
-
-  callback(type::Result::LEDGER_OK, args);
-}
-
-void UpholdAuthorization::OnCardCreate(
-    const type::Result result,
-    const std::string& address,
-    ledger::ExternalWalletAuthorizationCallback callback) {
-  if (result == type::Result::LEDGER_ERROR) {
-    BLOG(0, "Card creation");
-    callback(type::Result::LEDGER_ERROR, {});
-    return;
-  }
-
-  auto wallet_ptr = GetWallet(ledger_);
-  wallet_ptr->address = address;
-  ledger_->uphold()->SetWallet(wallet_ptr->Clone());
-
-  if (!address.empty()) {
-    ledger_->database()->SaveEventLog(
-        log::kWalletConnected,
-        static_cast<std::string>(constant::kWalletUphold) + "/" +
-            address.substr(0, 5));
-  }
-
-  base::flat_map<std::string, std::string> args;
-  if (wallet_ptr->status != type::WalletStatus::VERIFIED) {
-    args["redirect_url"] = GetSecondStepVerify();
-  }
-
-  callback(type::Result::LEDGER_OK, args);
+  callback(type::Result::LEDGER_OK, {});
 }
 
 }  // namespace uphold
