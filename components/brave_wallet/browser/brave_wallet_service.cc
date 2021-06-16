@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
@@ -24,6 +25,8 @@ BraveWalletService::BraveWalletService(
       brave_wallet::Network::kMainnet, url_loader_factory);
   keyring_controller_ =
       std::make_unique<brave_wallet::KeyringController>(prefs);
+  asset_ratio_controller_ =
+      std::make_unique<brave_wallet::AssetRatioController>(url_loader_factory);
 }
 
 BraveWalletService::~BraveWalletService() {}
@@ -50,6 +53,11 @@ brave_wallet::EthJsonRpcController* BraveWalletService::rpc_controller() const {
 brave_wallet::KeyringController* BraveWalletService::keyring_controller()
     const {
   return keyring_controller_.get();
+}
+
+brave_wallet::AssetRatioController* BraveWalletService::asset_ratio_controller()
+    const {
+  return asset_ratio_controller_.get();
 }
 
 bool BraveWalletService::IsWalletBackedUp() const {
