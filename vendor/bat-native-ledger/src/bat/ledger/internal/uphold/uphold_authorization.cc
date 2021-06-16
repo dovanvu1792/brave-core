@@ -37,6 +37,8 @@ void UpholdAuthorization::Authorize(
   // VERIFIED and PENDING.
   DCHECK(uphold_wallet->status == type::WalletStatus::NOT_CONNECTED ||
          uphold_wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
+  DCHECK(uphold_wallet->token.empty());
+  DCHECK(uphold_wallet->address.empty());
 
   const auto current_one_time = uphold_wallet->one_time_string;
 
@@ -112,9 +114,10 @@ void UpholdAuthorization::OnAuthorize(
 
   DCHECK(uphold_wallet->status == type::WalletStatus::NOT_CONNECTED ||
          uphold_wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
+  DCHECK(uphold_wallet->token.empty());
+  DCHECK(uphold_wallet->address.empty());
 
   uphold_wallet->status = type::WalletStatus::PENDING;
-  DCHECK(uphold_wallet->address.empty());
   uphold_wallet->token = token;
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
