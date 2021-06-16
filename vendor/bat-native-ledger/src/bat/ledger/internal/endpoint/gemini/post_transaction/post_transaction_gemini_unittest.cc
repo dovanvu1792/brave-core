@@ -49,12 +49,13 @@ TEST_F(GeminiPostTransactionTest, ServerOK) {
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
-             "currency_code": "BAT",
-             "amount": "1.00",
-             "dry_run": true,
-             "message": null,
-             "transfer_id": "d382d3ae-8462-4b2c-9b60-b669539f41b2",
-             "transfer_status": "SUCCESS"
+              "result": "OK",
+              "tx_ref": "A5721BF3-530C-42AF-8DEE-005DCFF76970",
+              "amount": 1,
+              "currency": "BAT",
+              "destination": "60bf98d6-d1f8-4d35-8650-8d4570a86b60",
+              "status": "Completed",
+              "timestampms": 1623171893237
             })";
             callback(response);
           }));
@@ -64,10 +65,9 @@ TEST_F(GeminiPostTransactionTest, ServerOK) {
   transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
-                        false,
                         [](const type::Result result, const std::string& id) {
                           EXPECT_EQ(result, type::Result::LEDGER_OK);
-                          EXPECT_EQ(id, "d382d3ae-8462-4b2c-9b60-b669539f41b2");
+                          EXPECT_EQ(id, "A5721BF3-530C-42AF-8DEE-005DCFF76970");
                         });
 }
 
@@ -87,7 +87,6 @@ TEST_F(GeminiPostTransactionTest, ServerError401) {
   transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
-                        false,
                         [](const type::Result result, const std::string& id) {
                           EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
                           EXPECT_EQ(id, "");
@@ -110,7 +109,6 @@ TEST_F(GeminiPostTransactionTest, ServerErrorRandom) {
   transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
 
   transaction_->Request("4c2b665ca060d912fec5c735c734859a06118cc8", transaction,
-                        false,
                         [](const type::Result result, const std::string& id) {
                           EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                           EXPECT_EQ(id, "");

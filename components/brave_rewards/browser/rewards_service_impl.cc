@@ -3467,7 +3467,7 @@ bool RewardsServiceImpl::IsBitFlyerRegion() const {
 
 std::string RewardsServiceImpl::GetExternalWalletType() const {
   if (IsBitFlyerRegion()) {
-    return ledger::constant::kWalletBitflyer; 
+    return ledger::constant::kWalletBitflyer;
   }
 #if defined(OS_ANDROID)
   return ledger::constant::kWalletUphold;

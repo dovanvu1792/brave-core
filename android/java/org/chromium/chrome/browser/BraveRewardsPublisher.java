@@ -19,5 +19,5 @@ class BraveRewardsPublisher {
     public static final int CONNECTED = 1;
     public static final int UPHOLD_VERIFIED = 2;
     public static final int BITFLYER_VERIFIED = 3;
-    public static final int GEMINI_VERIFIED = 3;
+    public static final int GEMINI_VERIFIED = 4;
 }

@@ -100,7 +100,7 @@ std::string GetGeminiDestination() {
   }
 
   NOTREACHED();
-  return kUpholdDestinationDev;
+  return kGeminiDestinationDev;
 }
 
 }  // namespace sku

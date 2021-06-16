@@ -5,6 +5,7 @@
 
 #include <map>
 
+#include "base/values.h"
 #include "base/containers/flat_map.h"
 #include "base/files/scoped_temp_dir.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -238,6 +239,9 @@ class MockRewardsService : public RewardsService {
                void(brave_rewards::GetWalletPassphraseCallback));
 
   MOCK_METHOD1(SetAdsEnabled, void(const bool is_enabled));
+  MOCK_METHOD0(GetExternalWalletProviders, base::Value());
+  MOCK_METHOD1(SetSelectedWallet,
+               void(const std::string));
 
   MOCK_CONST_METHOD0(IsRewardsEnabled, bool());
 };

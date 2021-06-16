@@ -83,6 +83,7 @@ source_set("headers") {
     "//brave/browser/ui:ui",
     "//brave/components/brave_rewards/browser:browser",
     "//brave/components/brave_rewards/browser:testutil",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/payment",
     "//brave/vendor/brave-ios:rewards_db",
   ]
 
@@ -548,6 +549,7 @@ source_set("ledger") {
     "//base",
     "//brave/components/brave_private_cdn",
     "//brave/components/challenge_bypass_ristretto",
+    "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/payment",
     "//crypto",
     "//net:net",
     "//sql:sql",
@@ -556,7 +558,6 @@ source_set("ledger") {
     "//third_party/protobuf:protobuf_lite",
     "//third_party/re2",
     "//url",
-    "src/bat/ledger/internal/endpoint/payment",
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),

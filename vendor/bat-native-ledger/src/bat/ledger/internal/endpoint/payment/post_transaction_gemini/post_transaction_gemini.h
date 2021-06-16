@@ -1,12 +1,10 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_ENDPOINT_PAYMENT_POST_TRANSACTION_GEMINI_\
-POST_TRANSACTION_GEMINI_H_
-#define BRAVELEDGER_ENDPOINT_PAYMENT_POST_TRANSACTION_GEMINI_\
-POST_TRANSACTION_GEMINI_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_TRANSACTION_GEMINI_POST_TRANSACTION_GEMINI_H_
+#define BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_TRANSACTION_GEMINI_POST_TRANSACTION_GEMINI_H_
 
 #include <string>
 
@@ -78,5 +76,4 @@ class PostTransactionGemini {
 }  // namespace endpoint
 }  // namespace ledger
 
-#endif  // BRAVELEDGER_ENDPOINT_PAYMENT_POST_TRANSACTION_GEMINI_\
-// POST_TRANSACTION_GEMINI_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_LEDGER_SRC_BAT_LEDGER_INTERNAL_ENDPOINT_PAYMENT_POST_TRANSACTION_GEMINI_POST_TRANSACTION_GEMINI_H_

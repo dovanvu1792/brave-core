@@ -147,9 +147,14 @@ class RewardsDOMHandler : public WebUIMessageHandler,
     ledger::type::BalancePtr balance);
 
   void GetExternalWallet(const base::ListValue* args);
-  void OnGetExternalWallet(const bool open_verify_url,
-                           const ledger::type::Result result,
+  void OnGetExternalWallet(const ledger::type::Result result,
                            ledger::type::ExternalWalletPtr wallet);
+  void OnExternalWalletSelected(const ledger::type::Result result,
+                                ledger::type::ExternalWalletPtr wallet);
+
+  base::Value ParseExternalWalletPtr(const ledger::type::Result result,
+                                     ledger::type::ExternalWalletPtr wallet,
+                                     const bool open_verify_url = false);
 
   void ProcessRewardsPageUrl(const base::ListValue* args);
 
@@ -584,14 +589,11 @@ void RewardsDOMHandler::SetSelectedWallet(
     return;
 
   AllowJavascript();
-
   const std::string wallet_type = args->GetList()[0].GetString();
-
   rewards_service_->SetSelectedWallet(wallet_type);
   rewards_service_->GetExternalWallet(base::BindOnce(
-      &RewardsDOMHandler::OnGetExternalWallet,
-      weak_factory_.GetWeakPtr(),
-      true));
+      &RewardsDOMHandler::OnExternalWalletSelected,
+      weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnGetAutoContributeProperties(
@@ -1602,34 +1604,50 @@ void RewardsDOMHandler::GetExternalWallet(const base::ListValue* args) {
 
   AllowJavascript();
   rewards_service_->GetExternalWallet(base::BindOnce(
-      &RewardsDOMHandler::OnGetExternalWallet, weak_factory_.GetWeakPtr(), false));
+      &RewardsDOMHandler::OnGetExternalWallet,
+      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetExternalWallet(
-    const bool open_verify_url,
+base::Value RewardsDOMHandler::ParseExternalWalletPtr(
+    const ledger::type::Result result,
+    ledger::type::ExternalWalletPtr wallet,
+    const bool open_verify_url) {
+  base::Value data(base::Value::Type::DICTIONARY);
+
+  data.SetIntKey("result", static_cast<int>(result));
+  base::Value wallet_dict(base::Value::Type::DICTIONARY);
+
+  if (wallet) {
+    wallet_dict.SetStringKey("type", wallet->type);
+    wallet_dict.SetStringKey("address", wallet->address);
+    wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
+    wallet_dict.SetStringKey("verifyUrl", wallet->verify_url);
+    wallet_dict.SetStringKey("addUrl", wallet->add_url);
+    wallet_dict.SetStringKey("withdrawUrl", wallet->withdraw_url);
+    wallet_dict.SetStringKey("userName", wallet->user_name);
+    wallet_dict.SetStringKey("accountUrl", wallet->account_url);
+    wallet_dict.SetStringKey("loginUrl", wallet->login_url);
+  }
+
+  data.SetKey("wallet", std::move(wallet_dict));
+  data.SetBoolKey("openVerifyUrl", open_verify_url);
+  return data;
+}
+
+void RewardsDOMHandler::OnExternalWalletSelected(
     const ledger::type::Result result,
     ledger::type::ExternalWalletPtr wallet) {
   if (IsJavascriptAllowed()) {
-    base::Value data(base::Value::Type::DICTIONARY);
+    auto data = ParseExternalWalletPtr(result, std::move(wallet), true);
+    CallJavascriptFunction("brave_rewards.externalWallet", data);
+  }
+}
 
-    data.SetIntKey("result", static_cast<int>(result));
-    base::Value wallet_dict(base::Value::Type::DICTIONARY);
-
-    if (wallet) {
-      wallet_dict.SetStringKey("type", wallet->type);
-      wallet_dict.SetStringKey("address", wallet->address);
-      wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
-      wallet_dict.SetStringKey("verifyUrl", wallet->verify_url);
-      wallet_dict.SetStringKey("addUrl", wallet->add_url);
-      wallet_dict.SetStringKey("withdrawUrl", wallet->withdraw_url);
-      wallet_dict.SetStringKey("userName", wallet->user_name);
-      wallet_dict.SetStringKey("accountUrl", wallet->account_url);
-      wallet_dict.SetStringKey("loginUrl", wallet->login_url);
-    }
-
-    data.SetKey("wallet", std::move(wallet_dict));
-    data.SetBoolKey("openVerifyUrl", open_verify_url);
-
+void RewardsDOMHandler::OnGetExternalWallet(
+    const ledger::type::Result result,
+    ledger::type::ExternalWalletPtr wallet) {
+  if (IsJavascriptAllowed()) {
+    auto data = ParseExternalWalletPtr(result, std::move(wallet));
     CallJavascriptFunction("brave_rewards.externalWallet", data);
   }
 }
@@ -1978,7 +1996,8 @@ void RewardsDOMHandler::SaveOnboardingResult(const base::ListValue* args) {
     rewards_service_->EnableRewards();
 }
 
-void RewardsDOMHandler::GetExternalWalletProviders(const base::ListValue* args) {
+void RewardsDOMHandler::GetExternalWalletProviders(
+    const base::ListValue* args) {
   if (!rewards_service_)
     return;
 

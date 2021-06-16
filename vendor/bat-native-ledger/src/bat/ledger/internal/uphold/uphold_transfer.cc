@@ -101,7 +101,7 @@ void UpholdTransfer::OnCommitTransaction(
     client::TransactionCallback callback) {
   if (result == type::Result::EXPIRED_TOKEN) {
     callback(type::Result::EXPIRED_TOKEN, "");
-    ledger_->bitflyer()->DisconnectWallet();
+    ledger_->uphold()->DisconnectWallet();
     return;
   }
 

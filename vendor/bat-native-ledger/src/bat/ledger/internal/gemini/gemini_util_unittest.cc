@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <map>
 #include <memory>
-#include <utility>
+#include <string>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/global_constants.h"
@@ -87,14 +86,10 @@ TEST_F(GeminiUtilTest, GetAuthorizeUrl) {
             "/auth"
             "?client_id=" GEMINI_WALLET_CLIENT_ID
             "&scope="
-            "orders:create,"
-            "payments:send,"
-            "payments:create,"
             "balances:read,"
-            "payments:read,"
-            "orders:read,"
-            "addresses:create,"
-            "account:read"
+            "history:read,"
+            "crypto:send,"
+            "account:read,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=my-state"
             "&response_type=code");
@@ -106,14 +101,10 @@ TEST_F(GeminiUtilTest, GetAuthorizeUrl) {
             "/auth"
             "?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
             "&scope="
-            "orders:create,"
-            "payments:send,"
-            "payments:create,"
             "balances:read,"
-            "payments:read,"
-            "orders:read,"
-            "addresses:create,"
-            "account:read"
+            "history:read,"
+            "crypto:send,"
+            "account:read,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=my-state"
             "&response_type=code");
@@ -205,14 +196,11 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
             "/auth"
             "?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope=orders:create,"
-            "payments:send,"
-            "payments:create,"
+            "&scope="
             "balances:read,"
-            "payments:read,"
-            "orders:read,"
-            "addresses:create,"
-            "account:read"
+            "history:read,"
+            "crypto:send,"
+            "account:read,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -226,14 +214,11 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
             "/auth"
             "?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope=orders:create,"
-            "payments:send,"
-            "payments:create,"
+            "&scope="
             "balances:read,"
-            "payments:read,"
-            "orders:read,"
-            "addresses:create,"
-            "account:read"
+            "history:read,"
+            "crypto:send,"
+            "account:read,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -247,14 +232,11 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
             "/auth"
             "?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope=orders:create,"
-            "payments:send,"
-            "payments:create,"
+            "&scope="
             "balances:read,"
-            "payments:read,"
-            "orders:read,"
-            "addresses:create,"
-            "account:read"
+            "history:read,"
+            "crypto:send,"
+            "account:read,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -268,14 +250,11 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
             "/auth"
             "?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope=orders:create,"
-            "payments:send,"
-            "payments:create,"
+            "&scope="
             "balances:read,"
-            "payments:read,"
-            "orders:read,"
-            "addresses:create,"
-            "account:read"
+            "history:read,"
+            "crypto:send,"
+            "account:read,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -289,14 +268,11 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
             "/auth"
             "?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope=orders:create,"
-            "payments:send,"
-            "payments:create,"
+            "&scope="
             "balances:read,"
-            "payments:read,"
-            "orders:read,"
-            "addresses:create,"
-            "account:read"
+            "history:read,"
+            "crypto:send,"
+            "account:read,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");
@@ -310,14 +286,11 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
   ASSERT_EQ(result->verify_url, GEMINI_OAUTH_STAGING_URL
             "/auth"
             "?client_id=" GEMINI_WALLET_STAGING_CLIENT_ID
-            "&scope=orders:create,"
-            "payments:send,"
-            "payments:create,"
+            "&scope="
             "balances:read,"
-            "payments:read,"
-            "orders:read,"
-            "addresses:create,"
-            "account:read"
+            "history:read,"
+            "crypto:send,"
+            "account:read,"
             "&redirect_uri=rewards://gemini/authorization"
             "&state=aaabbbccc"
             "&response_type=code");

@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/ledger_client_mock.h"

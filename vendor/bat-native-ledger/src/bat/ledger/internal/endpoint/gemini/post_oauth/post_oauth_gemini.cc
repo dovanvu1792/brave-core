@@ -14,7 +14,6 @@
 #include "bat/ledger/internal/gemini/gemini_util.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 
@@ -48,18 +47,6 @@ std::string PostOauth::GeneratePayload(const std::string& external_account_id,
   std::string payload;
   base::JSONWriter::Write(dict, &payload);
   return payload;
-}
-
-type::Result PostOauth::CheckStatusCode(const int status_code) {
-  if (status_code == net::HTTP_UNAUTHORIZED) {
-    return type::Result::EXPIRED_TOKEN;
-  }
-
-  if (status_code != net::HTTP_OK) {
-    return type::Result::LEDGER_ERROR;
-  }
-
-  return type::Result::LEDGER_OK;
 }
 
 type::Result PostOauth::ParseBody(const std::string& body,

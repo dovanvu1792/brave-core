@@ -8,7 +8,9 @@
 #include "base/base64.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/gemini/gemini_util.h"
+#include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/ledger.h"
+#include "net/http/http_status_code.h"
 
 namespace ledger {
 namespace endpoint {
@@ -38,7 +40,6 @@ std::vector<std::string> RequestAuthorization(const std::string& token) {
                      &user);
 
   headers.push_back("Authorization: Basic " + user);
-
   return headers;
 }
 
@@ -66,6 +67,23 @@ std::string GetOauthServerUrl(const std::string& path) {
   }
 
   return url + path;
+}
+
+type::Result CheckStatusCode(const int status_code) {
+  if (status_code == net::HTTP_UNAUTHORIZED) {
+    return type::Result::EXPIRED_TOKEN;
+  }
+
+  if (status_code == net::HTTP_NOT_FOUND) {
+    BLOG(0, "Account not found");
+    return type::Result::NOT_FOUND;
+  }
+
+  if (status_code != net::HTTP_OK) {
+    return type::Result::LEDGER_ERROR;
+  }
+
+  return type::Result::LEDGER_OK;
 }
 
 }  // namespace gemini

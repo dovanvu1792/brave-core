@@ -8,6 +8,7 @@
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger.h"
+#include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=GeminiUtilsTest.*
@@ -52,6 +53,13 @@ TEST(GeminiUtilsTest, GetOauthServerUrlProduction) {
   ledger::_environment = type::Environment::PRODUCTION;
   const std::string url = GetOauthServerUrl("/test");
   ASSERT_EQ(url, GEMINI_OAUTH_URL "/test");
+}
+
+TEST(GeminiUtilsTest, CheckStatusCodeTest) {
+  ASSERT_EQ(CheckStatusCode(net::HTTP_UNAUTHORIZED), type::Result::EXPIRED_TOKEN);
+  ASSERT_EQ(CheckStatusCode(net::HTTP_NOT_FOUND), type::Result::NOT_FOUND);
+  ASSERT_EQ(CheckStatusCode(net::HTTP_BAD_REQUEST), type::Result::LEDGER_ERROR);
+  ASSERT_EQ(CheckStatusCode(net::HTTP_OK), type::Result::LEDGER_OK);
 }
 
 }  // namespace gemini

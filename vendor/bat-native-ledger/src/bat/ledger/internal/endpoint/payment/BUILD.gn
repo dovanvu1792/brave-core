@@ -33,6 +33,8 @@ config("internal_config") {
 }
 
 source_set("payment") {
+  # Todo(@jumde) - Remove when https://github.com/brave/brave-browser/issues/16474 is resolved
+  check_includes = false
   configs += [ ":internal_config" ]
 
   sources = [
@@ -56,6 +58,8 @@ source_set("payment") {
 
   deps = [
     "//base",
-    "//brave/components/challenge_bypass_ristretto"
+    "//brave/components/challenge_bypass_ristretto",
+    "//brave/vendor/bat-native-ledger:headers",
+    "//net:net"
   ]
 }

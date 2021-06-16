@@ -5,7 +5,6 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/endpoint/gemini/post_account/post_account_gemini.h"
@@ -50,20 +49,21 @@ TEST_F(GeminiPostAccountTest, ServerOK) {
             response.url = request->url;
             response.body = R"({
               "account": {
-              "accountName": "Primary",
-              "shortName": "primary",
-              "type": "exchange",
-              "created": "1619040615242",
-              "verificationToken": "mocktoken"
-            },
-            "users": [{
-              "name": "Test",
-              "lastSignIn": "2021-04-30T18:46:03.017Z",
-              "status": "Active",
-              "countryCode": "US",
-              "isVerified": true
-            }],
-            "memo_reference_code": "GEMAPLLV"})";
+                "accountName": "Primary",
+                "shortName": "primary",
+                "type": "exchange",
+                "created": "1619040615242",
+                "verificationToken": "mocktoken"
+              },
+              "users": [{
+                "name": "Test",
+                "lastSignIn": "2021-04-30T18:46:03.017Z",
+                "status": "Active",
+                "countryCode": "US",
+                "isVerified": true
+              }],
+              "memo_reference_code": "GEMAPLLV"
+            })";
             callback(response);
           }));
 

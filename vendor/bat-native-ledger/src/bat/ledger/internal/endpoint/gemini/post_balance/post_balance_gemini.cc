@@ -12,7 +12,6 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 
@@ -28,20 +27,6 @@ PostBalance::~PostBalance() = default;
 
 std::string PostBalance::GetUrl() {
   return GetApiServerUrl("/v1/balances");
-}
-
-type::Result PostBalance::CheckStatusCode(const int status_code) {
-  if (status_code == net::HTTP_UNAUTHORIZED ||
-      status_code == net::HTTP_NOT_FOUND ||
-      status_code == net::HTTP_FORBIDDEN) {
-    return type::Result::EXPIRED_TOKEN;
-  }
-
-  if (status_code != net::HTTP_OK) {
-    return type::Result::LEDGER_ERROR;
-  }
-
-  return type::Result::LEDGER_OK;
 }
 
 type::Result PostBalance::ParseBody(const std::string& body,

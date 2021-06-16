@@ -21,6 +21,8 @@ declare_args() {
 if (is_official_build && !is_ios) {
   assert(uphold_client_id != "")
   assert(uphold_client_secret != "")
+  assert(gemini_api_url != "")
+  assert(gemini_oauth_url != "")
   assert(gemini_wallet_client_id != "")
   assert(gemini_wallet_client_secret != "")
 }

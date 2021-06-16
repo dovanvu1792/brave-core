@@ -59,8 +59,6 @@ class PostBalance {
  private:
   std::string GetUrl();
 
-  type::Result CheckStatusCode(const int status_code);
-
   type::Result ParseBody(const std::string& body, double* available);
 
   void OnRequest(const type::UrlResponse& response,

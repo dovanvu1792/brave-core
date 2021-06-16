@@ -11,21 +11,13 @@
 #include "bat/ledger/internal/gemini/gemini.h"
 #include "bat/ledger/ledger.h"
 
-// POST https://gemini.jp/api/link/v1/coin/withdraw-to-deposit-id/request
+// POST https://api.gemini.com/v1/payments/pay
+// Headers:
+//   Authorization: Bearer w43gqn3EYg9BxkMt4LmhvVfTi7jzwALq73SBA5FwnkVS
+//   X-GEMINI-PAYLOAD: ewogICAgInR4X3JlZiI6ICJBNTcyMUJGMy01MzBDLTQyQUYtOERFRS0wMDVEQ0ZGNzY5NzAiLAogICAgImFtb3VudCI6ICIxIiwKICAgICJjdXJyZW5jeSI6ICJCQVQiLAogICAgImRlc3RpbmF0aW9uIjogIjYwYmY5OGQ2LWQxZjgtNGQzNS04NjUwLThkNDU3MGE4NmI2MCIKfQ==
 //
 // Request body:
-// {
-//   "currency_code": "BAT",
-//   "amount": "1.00",
-//   "dry_run": true,
-//   "deposit_id": "xxxxxxxxx",
-//   "transfer_id": "base58idgoeshere",
-//   "dry_run_option": {
-//     "request_api_transfer_status": "INVALID_AMOUNT",
-//     "process_time_sec": 5,
-//     "status_api_transfer_status": "INVALID_AMOUNT"
-//   }
-// }
+// {}
 //
 // Success code:
 // HTTP_OK (200)
@@ -36,12 +28,13 @@
 //
 // Response body:
 // {
-//   "currency_code": "BAT",
-//   "amount": "1.00",
-//   "dry_run": true,
-//   "message": null,
-//   "transfer_id": "base58idgoeshere",
-//   "transfer_status": "SUCCESS"
+//   "result": "OK",
+//   "tx_ref": "A5721BF3-530C-42AF-8DEE-005DCFF76970",
+//   "amount": 1,
+//   "currency": "BAT",
+//   "destination": "60bf98d6-d1f8-4d35-8650-8d4570a86b60",
+//   "status": "Completed",
+//   "timestampms": 1623171893237
 // }
 
 namespace ledger {
@@ -67,8 +60,6 @@ class PostTransaction {
 
   std::string GeneratePayload(
       const ::ledger::gemini::Transaction& transaction);
-
-  type::Result CheckStatusCode(const int status_code);
 
   type::Result ParseBody(const std::string& body,
                          std::string* transfer_id,

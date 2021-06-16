@@ -163,7 +163,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
   generateActions (actions: ActionWallet[], id?: string) {
     return actions && actions.map((action, i: number) => {
-      let clickAction = action.externalWallet ? this.onActionClick.bind(this, this.props.onVerifyClick) : action.action
+      let clickAction = action.externalWallet ? this.onActionClick.bind(this, action.action) : action.action
       return (
         <StyledAction key={`${id}-${i}`} onClick={clickAction} data-test-id={action.testId}>
           <StyledActionIcon>{action.icon}</StyledActionIcon>

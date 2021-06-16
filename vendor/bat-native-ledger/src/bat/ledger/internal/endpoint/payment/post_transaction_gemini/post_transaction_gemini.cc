@@ -89,6 +89,10 @@ void PostTransactionGemini::Request(
   request->content = GeneratePayload(transaction);
   request->content_type = "application/json; charset=utf-8";
   request->method = type::UrlMethod::POST;
+  BLOG(0, "Initiating gemini transaction to: " \
+          << transaction.external_transaction_id \
+          << "for " << transaction.amount);
+
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
@@ -96,6 +100,14 @@ void PostTransactionGemini::OnRequest(
     const type::UrlResponse& response,
     PostTransactionGeminiCallback callback) {
   ledger::LogUrlResponse(__func__, response);
+
+  BLOG_IF(0,
+          CheckStatusCode(response.status_code) != type::Result::LEDGER_OK,
+          "Error creating gemini transaction on the payment server");
+  BLOG_IF(0,
+          CheckStatusCode(response.status_code) == type::Result::LEDGER_OK,
+          "Gemini transaction successful on the payment server");
+
   callback(CheckStatusCode(response.status_code));
 }
 

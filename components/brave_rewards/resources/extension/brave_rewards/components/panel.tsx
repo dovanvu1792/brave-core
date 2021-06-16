@@ -26,7 +26,6 @@ interface Props extends RewardsExtension.ComponentProps {
 }
 
 interface State {
-  stage: string
   showSummary: boolean
   showRewardsTour: boolean
   firstTimeSetup: boolean
@@ -42,7 +41,6 @@ export class Panel extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      stage: "wallet",
       showSummary: true,
       showRewardsTour: false,
       firstTimeSetup: false,
@@ -299,7 +297,7 @@ export class Panel extends React.Component<Props, State> {
       return
     }
 
-    utils.handleExternalWalletLink(this.props.actions, balance, externalWallet)
+    utils.handleExternalWalletLink(balance, externalWallet)
   }
 
   showTipSiteDetail = (entryPoint: RewardsExtension.TipDialogEntryPoint) => {
@@ -716,7 +714,7 @@ export class Panel extends React.Component<Props, State> {
       }
 
       const onVerifyClick = () => {
-        utils.handleExternalWalletLink(this.props.actions, balance, externalWallet)
+        utils.handleExternalWalletLink(balance, externalWallet)
       }
 
       return (

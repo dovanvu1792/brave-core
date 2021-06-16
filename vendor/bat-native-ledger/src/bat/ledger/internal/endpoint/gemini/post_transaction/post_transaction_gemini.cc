@@ -14,7 +14,6 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/gemini/gemini_utils.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 
@@ -46,23 +45,6 @@ std::string PostTransaction::GeneratePayload(
   std::string base64;
   base::Base64Encode(base::StringPiece(json), &base64);
   return base64;
-}
-
-type::Result PostTransaction::CheckStatusCode(const int status_code) {
-  if (status_code == net::HTTP_UNAUTHORIZED) {
-    return type::Result::EXPIRED_TOKEN;
-  }
-
-  if (status_code == net::HTTP_NOT_FOUND) {
-    BLOG(0, "Account not found");
-    return type::Result::NOT_FOUND;
-  }
-
-  if (status_code != net::HTTP_OK) {
-    return type::Result::LEDGER_ERROR;
-  }
-
-  return type::Result::LEDGER_OK;
 }
 
 type::Result PostTransaction::ParseBody(const std::string& body,
@@ -118,6 +100,9 @@ void PostTransaction::Request(
   request->method = type::UrlMethod::POST;
   request->headers.push_back("X-GEMINI-PAYLOAD: " + payload);
 
+  BLOG(0, "Initiating gemini transaction to: " << transaction.address << "for "\
+      << transaction.amount);
+
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
@@ -126,6 +111,13 @@ void PostTransaction::OnRequest(const type::UrlResponse& response,
   ledger::LogUrlResponse(__func__, response);
 
   type::Result result = CheckStatusCode(response.status_code);
+
+  BLOG_IF(0,
+          result != type::Result::LEDGER_OK,
+          "Gemini transaction failed");
+  BLOG_IF(0,
+          result == type::Result::LEDGER_OK,
+          "Gemini transaction successful");
 
   if (result != type::Result::LEDGER_OK) {
     callback(result, "");

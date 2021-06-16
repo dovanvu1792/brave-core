@@ -127,7 +127,7 @@ export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) =
   return getMessage('greetingsVerified', [externalWallet.userName])
 }
 
-export const handleExternalWalletLink = (actions: any, balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
+export const handleExternalWalletLink = (balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
   if (!externalWallet) {
     return
   }

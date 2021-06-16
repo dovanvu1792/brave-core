@@ -61,8 +61,6 @@ class PostOauth {
   std::string GeneratePayload(const std::string& external_account_id,
                               const std::string& code);
 
-  type::Result CheckStatusCode(const int status_code);
-
   type::Result ParseBody(const std::string& body, std::string* token);
 
   void OnRequest(const type::UrlResponse& response, PostOauthCallback callback);

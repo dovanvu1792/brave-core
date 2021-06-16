@@ -91,6 +91,20 @@ const cleanData = (state: Rewards.State) => {
     state.parameters = defaultState.parameters
   }
 
+  // Name change: onBoardingDisplayed -> verifyOnboardingDisplayed
+  if (state.ui.verifyOnboardingDisplayed === undefined) {
+    const { ui } = state as any
+    if (ui.onBoardingDisplayed) {
+      ui.verifyOnboardingDisplayed = true
+      ui.onBoardingDisplayed = undefined
+    }
+  }
+
+  // Data type change: adsNextPaymentDate (string -> number)
+  if (typeof (state.adsData.adsNextPaymentDate as any) !== 'number') {
+    throw new Error('Invalid adsNextPaymentDate')
+  }
+
   state.ui.modalRedirect = 'hide'
 
   return state
