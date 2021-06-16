@@ -114,6 +114,7 @@ void UpholdAuthorization::OnAuthorize(
          uphold_wallet->status == type::WalletStatus::DISCONNECTED_VERIFIED);
 
   uphold_wallet->status = type::WalletStatus::PENDING;
+  DCHECK(uphold_wallet->address.empty());
   uphold_wallet->token = token;
   uphold_wallet = GenerateLinks(std::move(uphold_wallet));
   if (!ledger_->uphold()->SetWallet(std::move(uphold_wallet))) {
