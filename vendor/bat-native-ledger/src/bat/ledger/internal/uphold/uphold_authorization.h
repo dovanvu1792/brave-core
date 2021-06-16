@@ -11,7 +11,6 @@
 
 #include "base/containers/flat_map.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
-#include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
