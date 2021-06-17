@@ -184,7 +184,7 @@ void Uphold::GenerateWallet(ledger::ResultCallback callback) {
 }
 
 void Uphold::CreateCard(CreateCardCallback callback) {
-  card_->CreateIfNecessary(callback);
+  card_->CreateBATCardIfNecessary(callback);
 }
 
 void Uphold::DisconnectWallet(const bool manual) {
@@ -215,7 +215,8 @@ void Uphold::DisconnectWallet(const bool manual) {
       [](type::Result _){});
   }
 
-  SetWallet(wallet->Clone());
+  wallet = GenerateLinks(std::move(wallet));
+  SetWallet(std::move(wallet));
 
   if (!shutting_down) {
     ledger_->ledger_client()->WalletDisconnected(constant::kWalletUphold);
