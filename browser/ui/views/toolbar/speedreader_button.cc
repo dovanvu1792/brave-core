@@ -21,6 +21,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/animation/ink_drop.h"
 
 SpeedreaderButton::SpeedreaderButton(PressedCallback callback,
                                      PrefService* prefs)
@@ -43,9 +44,10 @@ const char* SpeedreaderButton::GetClassName() const {
 }
 
 void SpeedreaderButton::SetHighlighted(bool bubble_visible) {
-  ink_drop()->AnimateToState(bubble_visible ? views::InkDropState::ACTIVATED
-                                            : views::InkDropState::DEACTIVATED,
-                             nullptr);
+  views::InkDrop::Get(this)->AnimateToState(
+      bubble_visible ? views::InkDropState::ACTIVATED
+                     : views::InkDropState::DEACTIVATED,
+      nullptr);
 }
 
 void SpeedreaderButton::OnPreferenceChanged() {
