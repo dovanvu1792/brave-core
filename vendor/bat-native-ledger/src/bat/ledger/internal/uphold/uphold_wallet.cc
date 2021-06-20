@@ -136,10 +136,6 @@ void UpholdWallet::OnCreateCard(const type::Result result,
   if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Access token expired!");
     ledger_->uphold()->DisconnectWallet();
-    // status == type::WalletStatus::NOT_CONNECTED
-    // Theoretically, calling DisconnectWallet() could result in
-    // DISCONNECTED_VERIFIED, but only in case the status was VERIFIED (which we
-    // know it wasn't - we create the card only in PENDING).
     return callback(type::Result::EXPIRED_TOKEN);
   }
 

@@ -28,13 +28,13 @@ void UpholdCard::CreateBATCardIfNecessary(CreateCardCallback callback) const {
 
 void UpholdCard::GetBATCardId(
     endpoint::uphold::GetCardsCallback callback) const {
-  auto wallet = GetWallet(ledger_);
-  if (!wallet) {
+  auto uphold_wallet = GetWallet(ledger_);
+  if (!uphold_wallet) {
     BLOG(0, "The Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR, "");
   }
 
-  uphold_server_->get_cards()->Request(wallet->token, callback);
+  uphold_server_->get_cards()->Request(uphold_wallet->token, callback);
 }
 
 void UpholdCard::OnGetBATCardId(const type::Result result,
@@ -56,13 +56,13 @@ void UpholdCard::OnGetBATCardId(const type::Result result,
 
 void UpholdCard::CreateBATCard(
     endpoint::uphold::PostCardsCallback callback) const {
-  auto wallet = GetWallet(ledger_);
-  if (!wallet) {
+  auto uphold_wallet = GetWallet(ledger_);
+  if (!uphold_wallet) {
     BLOG(0, "The Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR, "");
   }
 
-  uphold_server_->post_cards()->Request(wallet->token, callback);
+  uphold_server_->post_cards()->Request(uphold_wallet->token, callback);
 }
 
 void UpholdCard::OnCreateBATCard(const type::Result result,
@@ -72,8 +72,13 @@ void UpholdCard::OnCreateBATCard(const type::Result result,
     return callback(type::Result::EXPIRED_TOKEN, "");
   }
 
-  if (result != type::Result::LEDGER_OK || id.empty()) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't create BAT card!");
+    return callback(result, "");
+  }
+
+  if (id.empty()) {
+    BLOG(0, "BAT card ID is empty!");
     return callback(type::Result::LEDGER_ERROR, "");
   }
 
@@ -85,8 +90,8 @@ void UpholdCard::OnCreateBATCard(const type::Result result,
 void UpholdCard::UpdateBATCardSettings(
     const std::string& id,
     endpoint::uphold::PatchCardCallback callback) const {
-  auto wallet_ptr = GetWallet(ledger_);
-  if (!wallet_ptr) {
+  auto uphold_wallet = GetWallet(ledger_);
+  if (!uphold_wallet) {
     BLOG(0, "The Uphold wallet is null!");
     return callback(type::Result::LEDGER_ERROR);
   }
@@ -96,7 +101,8 @@ void UpholdCard::UpdateBATCardSettings(
   card.position = 1;
 
   DCHECK(!id.empty());
-  uphold_server_->patch_card()->Request(wallet_ptr->token, id, card, callback);
+  uphold_server_->patch_card()->Request(uphold_wallet->token, id, card,
+                                        callback);
 }
 
 void UpholdCard::OnUpdateBATCardSettings(const type::Result result,
