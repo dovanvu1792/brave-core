@@ -82,9 +82,8 @@ void UpholdCard::OnCreateBATCard(const type::Result result,
     return callback(type::Result::LEDGER_ERROR, "");
   }
 
-  UpdateBATCardSettings(
-      id,
-      std::bind(&UpholdCard::OnUpdateBATCardSettings, this, _1, id, callback));
+  UpdateBATCardSettings(id, std::bind(&UpholdCard::OnUpdateBATCardSettings,
+                                      this, _1, id, callback));
 }
 
 void UpholdCard::UpdateBATCardSettings(

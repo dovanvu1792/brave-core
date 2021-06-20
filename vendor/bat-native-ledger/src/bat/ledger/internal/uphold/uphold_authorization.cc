@@ -131,7 +131,8 @@ void UpholdAuthorization::OnAuthorize(
   ledger_->database()->SaveEventLog(
       "uphold_wallet_status_change",
       (std::ostringstream{} << from_status).str() + " ==> " +
-          (std::ostringstream{} << to_status).str() + " (UpholdAuthorization::OnAuthorize())");
+          (std::ostringstream{} << to_status).str() +
+          " (UpholdAuthorization::OnAuthorize())");
 
   callback(type::Result::LEDGER_OK, {});
 }
