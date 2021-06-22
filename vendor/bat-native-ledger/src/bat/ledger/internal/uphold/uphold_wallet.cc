@@ -230,6 +230,9 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   DCHECK(!id.empty());
 
   if (result == type::Result::ALREADY_EXISTS) {
+    ledger_->uphold()->DisconnectWallet();
+    // status == type::WalletStatus::NOT_CONNECTED
+
     ledger_->database()->SaveEventLog(
         log::kDeviceLimitReached,
         constant::kWalletUphold + std::string{"/"} + id.substr(0, 5));
@@ -237,8 +240,6 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
     ledger_->ledger_client()->ShowNotification("wallet_device_limit_reached",
                                                {}, [](type::Result) {});
 
-    ledger_->uphold()->DisconnectWallet();
-    // status == type::WalletStatus::NOT_CONNECTED
     return callback(type::Result::ALREADY_EXISTS);
   }
 
