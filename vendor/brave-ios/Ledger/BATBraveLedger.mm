@@ -1083,7 +1083,7 @@ BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 
 - (NSString *)encodedURI:(NSString *)uri
 {
-  const auto encoded = ledger->URIEncode(std::string(uri.UTF8String));
+  const auto encoded = [self URIEncode:std::string(uri.UTF8String)];
   return [NSString stringWithUTF8String:encoded.c_str()];
 }
 
